@@ -2,14 +2,25 @@ import unittest
 
 from htmlnode import HTMLNode
 
+class TestHTMLNode(unittest.TestCase):
+    def test_init(self):
+        node = HTMLNode("div", "Hello", [HTMLNode("p", "World")], {"class": "container"})
+        self.assertEqual(node.tag, "div")
+        self.assertEqual(node.value, "Hello")
+        self.assertEqual(len(node.children), 1)
+        self.assertEqual(node.children[0].tag, "p")
+        self.assertEqual(node.children[0].value, "World")
+        self.assertEqual(node.props, {"class": "container"})
 
-class TestTextNode(unittest.TestCase):
-    def test_eq(self):
-        node = HTMLNode()
-        node2 = HTMLNode()
-        self.assertEqual(node, node2)
+    def test_props_to_html(self):
+        node = HTMLNode("div", "Hello", None, {"class": "container", "id": "myDiv"})
+        self.assertEqual(node.props_to_html(), ' class="container" id="myDiv"')
 
+    def test_props_to_html_empty(self):
+        node = HTMLNode("div", "Hello", None, {})
+        self.assertEqual(node.props_to_html(), None)
+
+        
     
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
